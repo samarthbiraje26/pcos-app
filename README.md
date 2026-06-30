@@ -41,7 +41,8 @@ Beyond prediction, PCOSense offers a complete health support ecosystem by provid
 - Generative AI
 - Google Gemini API
   
-#Project Goal
+# Project Goal
+
 The goal of PCOSense is to promote early detection, awareness, and better health management for women at risk of PCOS through accessible AI-driven healthcare solutions.
 
 By combining predictive analytics with intelligent health assistance, PCOSense aims to provide users with actionable insights and personalized recommendations to support healthier lifestyles.
