@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test History — PCOSense</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .filters-bar {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filters-bar .search-bar {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    #filter-result {
+      min-width: 150px;
+    }
+
+    .table-meta {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-bottom: .5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+  <div class="sidebar-backdrop"></div>
+  <button class="menu-toggle-btn" aria-label="Toggle Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="/" class="sidebar-logo">PCOSense</a>
+      <nav class="sidebar-nav">
+              <span class="sidebar-section-label">Main</span>
+
+      <a href="/dashboard.html" class="sidebar-link">Dashboard</a>
+      <a href="/predict.html" class="sidebar-link">Start Assessment</a>
+      <a href="/diet.html" class="sidebar-link">Diet Plan</a>
+      <a href="/history.html" class="sidebar-link active">My History</a>
+      <a href="/chat.html" class="sidebar-link">Chatbot</a>
+      <a href="/awareness.html" class="sidebar-link">Awareness</a>
+    </nav>
+    <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar js-user-avatar">U</div>
+          <div class="user-info">
+            <div class="user-name  js-user-name">User</div>
+            <div class="user-email js-user-email">user@email.com</div>
+          </div>
+        </div>
+        <button class="sidebar-link js-logout"
+          style="width:100%;border:none;cursor:pointer;background:none;margin-top:.25rem;color:var(--danger)">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="flex-between page-header" style="flex-wrap:wrap;gap:1rem">
+        <div>
+          <h1 class="page-title">Your Assessment History</h1>
+          <p class="page-subtitle">Review and track your past health assessments.</p>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <a href="/predict.html" class="btn btn-primary btn-sm">Start New Assessment</a>
+          <button id="export-btn" class="btn btn-outline btn-sm">Download History</button>
+        </div>
+      </div>
+
+      <!-- Filters bar -->
+      <div class="filters-bar">
+        <div class="search-bar">
+          <input id="search-input" type="text" class="form-control" placeholder="Search by date, result, ID…"
+            style="padding-left: .75rem;" />
+        </div>
+        <select id="filter-result" class="form-control">
+          <option value="all">All Results</option>
+          <option value="positive">Positive</option>
+          <option value="negative">Negative</option>
+        </select>
+      </div>
+
+      <p class="table-meta">Showing <span id="total-count">—</span> records</p>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="table-wrap" style="border:none;border-radius:0">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Timestamp</th>
+                <th>Profile</th>
+                <th>Result</th>
+                <th>Confidence</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <tr>
+                <td colspan="6" style="text-align:center;padding:3rem;color:var(--text-muted)">
+                  Loading your past assessments...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div id="pagination" class="pagination"></div>
+
+      <!-- Disclaimer -->
+      <div class="card" style="margin-top:1.5rem;border-color:var(--border);background:var(--bg-card)">
+        <p style="font-size:.85rem;color:var(--text-muted);line-height:1.5">
+          <strong>Data Note:</strong> These results are estimates to help you understand your health.
+          Always consult with a qualified doctor for a professional medical diagnosis.
+        </p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/history.js"></script>
+</body>
+
+</html>

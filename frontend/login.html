@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — PCOSense</title>
+  <meta name="description" content="Sign in to your PCOSense account to access your system dashboard." />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+
+  <main class="auth-page">
+    <div class="auth-card">
+
+      <!-- Brand -->
+      <a href="/" class="auth-brand">PCOSense</a>
+
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to access your health dashboard</p>
+
+      <!-- Alert -->
+      <div id="login-alert" class="alert alert-error" role="alert"></div>
+
+      <!-- Form -->
+      <form id="login-form" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <div class="input-wrap">
+            <input id="email" type="email" class="form-control" placeholder="jane@example.com" autocomplete="email"
+              required style="padding-left: .75rem;" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">
+            Password
+            <a href="/forgot-password.html"
+              style="float:right;font-size:.8rem;color:var(--text);text-decoration:underline">Forgot password?</a>
+          </label>
+          <div class="input-wrap">
+            <input id="password" type="password" class="form-control" placeholder="Your password"
+              autocomplete="current-password" required style="padding-left: .75rem;" />
+            <button type="button" id="pw-toggle" class="toggle-pw" aria-label="Toggle password"
+              style="font-weight:600; font-size:.7rem; text-transform:uppercase;">Show</button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem">
+          <input type="checkbox" id="remember" style="width:14px;height:14px" />
+          <label for="remember" style="font-size:.85rem;color:var(--text-muted);cursor:pointer">Remember me</label>
+        </div>
+
+        <button id="login-btn" type="submit" class="btn btn-primary btn-full btn-lg">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-divider">or</div>
+
+      <p class="auth-footer">
+        No account? <a href="/register.html">Create an account</a>
+      </p>
+      <p class="auth-footer" style="margin-top:.5rem">
+        <a href="/" style="color:var(--text-dim);font-size:.8rem;text-decoration:none;">← Return to Main</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth-flow.js"></script>
+</body>
+
+</html>

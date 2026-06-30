@@ -1,0 +1,213 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           PCOS DETECT — HOW TO RUN THE APPLICATION              ║
+╚══════════════════════════════════════════════════════════════════╝
+
+PROJECT STRUCTURE
+-----------------
+pcos-app/
+├── backend/          ← Flask Python backend
+├── frontend/         ← HTML/CSS/JS frontend (served by Flask)
+├── model/
+│   └── pcos_model.py ← Your XGBoost model goes here (currently a placeholder)
+└── HOW_TO_RUN.txt    ← You are reading this file
+
+
+════════════════════════════════════════════════════════════════════
+STEP 1 — PREREQUISITES
+════════════════════════════════════════════════════════════════════
+
+Make sure the following are installed on your system:
+
+  ✅ Python 3.9 or higher
+       → Check: python --version
+
+  ✅ pip (Python package manager)
+       → Check: pip --version
+
+  ✅ (Optional) Git — for version control
+
+
+════════════════════════════════════════════════════════════════════
+STEP 2 — CREATE A VIRTUAL ENVIRONMENT (Recommended)
+════════════════════════════════════════════════════════════════════
+
+Open a terminal / command prompt and navigate to the project root:
+
+  > cd path\to\pcos-app
+
+Create a virtual environment:
+
+  > python -m venv venv
+
+Activate the virtual environment:
+
+  Windows (CMD):        venv\Scripts\activate
+  Windows (PowerShell): venv\Scripts\Activate.ps1
+  macOS / Linux:        source venv/bin/activate
+
+You should see (venv) in your terminal prompt.
+
+
+════════════════════════════════════════════════════════════════════
+STEP 3 — INSTALL DEPENDENCIES
+════════════════════════════════════════════════════════════════════
+
+With the virtual environment active, install all required packages:
+
+  > pip install -r backend/requirements.txt
+
+This installs:
+  - flask, flask-sqlalchemy, flask-jwt-extended
+  - flask-bcrypt, flask-cors
+  - xgboost, scikit-learn, numpy, pandas
+
+
+════════════════════════════════════════════════════════════════════
+STEP 4 — (OPTIONAL) ADD YOUR XGBOOST MODEL
+════════════════════════════════════════════════════════════════════
+
+If you have your trained XGBoost model ready:
+
+  1. Open  model/pcos_model.py
+  2. Implement the two functions as described in the comments:
+       - load_model()       → loads and returns the model
+       - predict(model, input_dict) → returns ("Positive"/"Negative", confidence)
+  3. Place any model files (.pkl, .json, etc.) inside the model/ directory.
+
+If the model is NOT provided, the app runs in MOCK MODE, which uses
+a built-in heuristic to generate demo predictions.
+
+
+════════════════════════════════════════════════════════════════════
+STEP 5 — RUN THE APPLICATION
+════════════════════════════════════════════════════════════════════
+
+From the project root, run:
+
+  > python backend/app.py
+
+Expected output:
+  [DB] ✅ Database tables ready.
+  ===================================================
+    PCOS Detection App  |  http://localhost:5000
+  ===================================================
+
+The database file (pcos.db) is created automatically inside backend/.
+
+
+════════════════════════════════════════════════════════════════════
+STEP 6 — OPEN IN BROWSER
+════════════════════════════════════════════════════════════════════
+
+Open your web browser and visit:
+
+  http://localhost:5000
+
+You will see the PCOS Detect landing page.
+
+PAGE GUIDE:
+  http://localhost:5000/              → Landing page
+  http://localhost:5000/register.html → Create account
+  http://localhost:5000/login.html    → Sign in
+  http://localhost:5000/dashboard.html → Dashboard (requires login)
+  http://localhost:5000/predict.html  → Run a PCOS test
+  http://localhost:5000/history.html  → View past results
+
+
+════════════════════════════════════════════════════════════════════
+STEP 7 — USING THE APPLICATION
+════════════════════════════════════════════════════════════════════
+
+  1. Visit http://localhost:5000 → click "Get Started"
+  2. Create a free account (Register page)
+  3. You'll be redirected to your Dashboard automatically
+  4. Click "Run a New PCOS Test" or go to the New Test page
+  5. Fill in the 3-step form (takes ~2 minutes)
+  6. Get your instant AI result with confidence score
+  7. View all your past tests on the History page
+  8. Export history as CSV anytime
+
+
+════════════════════════════════════════════════════════════════════
+STOPPING THE SERVER
+════════════════════════════════════════════════════════════════════
+
+Press  Ctrl + C  in the terminal to stop the Flask server.
+
+
+════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+════════════════════════════════════════════════════════════════════
+
+Problem: "ModuleNotFoundError: No module named 'flask'"
+  Fix:    Make sure your virtual environment is activated and
+          you ran:  pip install -r backend/requirements.txt
+
+Problem: "Address already in use" / Port 5000 busy
+  Fix:    Change the port in backend/app.py:
+            application.run(debug=True, host='0.0.0.0', port=5001)
+
+Problem: CORS error in browser
+  Fix:    This should not happen since Flask serves the frontend directly.
+          If using a separate dev server, update Config.CORS_ORIGINS in
+          backend/config.py to include your frontend URL.
+
+Problem: PowerShell execution policy error when activating venv
+  Fix:    Run: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+
+
+════════════════════════════════════════════════════════════════════
+INTEGRATING YOUR REAL XGBOOST MODEL (When Ready)
+════════════════════════════════════════════════════════════════════
+
+Edit  model/pcos_model.py  and implement:
+
+  import pickle
+  import numpy as np
+
+  def load_model():
+      with open("model/your_model.pkl", "rb") as f:
+          return pickle.load(f)
+
+  def predict(model, input_dict):
+      # Arrange features in the order your model expects
+      features = np.array([[
+          input_dict["age"],
+          input_dict["bmi"],
+          input_dict["cycle_length"],
+          int(input_dict["cycle_irregular"]),
+          input_dict["follicle_left"],
+          input_dict["follicle_right"],
+          int(input_dict["skin_darkening"]),
+          int(input_dict["hair_growth"]),
+          int(input_dict["weight_gain"]),
+          int(input_dict["fast_food"]),
+          int(input_dict["acne"]),
+          int(input_dict["hair_loss"]),
+      ]])
+      proba  = model.predict_proba(features)[0]
+      label  = "Positive" if proba[1] >= 0.5 else "Negative"
+      return label, float(proba[1])
+
+Then restart the server — the real model will be picked up automatically.
+
+
+════════════════════════════════════════════════════════════════════
+TECH STACK SUMMARY
+════════════════════════════════════════════════════════════════════
+
+  Backend    : Python Flask 3.x
+  Database   : SQLite (file: backend/pcos.db)
+  Auth       : JWT (access + refresh tokens) + bcrypt
+  ML Model   : XGBoost (with mock fallback)
+  Frontend   : HTML5 + Vanilla CSS + JavaScript (no frameworks)
+  Design     : Clean, minimal, utility-first light theme
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║  ⚠️  IMPORTANT MEDICAL DISCLAIMER                                ║
+║                                                                  ║
+║  This tool is for SCREENING PURPOSES ONLY. Results are not a     ║
+║  medical diagnosis. Always consult a qualified gynecologist or   ║
+║  healthcare provider for clinical evaluation and treatment.      ║
+╚══════════════════════════════════════════════════════════════════╝

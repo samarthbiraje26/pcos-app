@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diet Plan — PCOSense</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .diet-alert { margin-bottom: 1.5rem; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div class="sidebar-backdrop"></div>
+  <button class="menu-toggle-btn" aria-label="Toggle Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="/" class="sidebar-logo">PCOSense</a>
+    <nav class="sidebar-nav">
+            <span class="sidebar-section-label">Main</span>
+
+      <a href="/dashboard.html" class="sidebar-link">Dashboard</a>
+      <a href="/predict.html" class="sidebar-link">Start Assessment</a>
+      <a href="/diet.html" class="sidebar-link active">Diet Plan</a>
+      <a href="/history.html" class="sidebar-link">My History</a>
+      <a href="/chat.html" class="sidebar-link">Chatbot</a>
+      <a href="/awareness.html" class="sidebar-link">Awareness</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="avatar js-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name  js-user-name">User</div>
+          <div class="user-email js-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button class="sidebar-link js-logout" style="width:100%;border:none;cursor:pointer;background:none;margin-top:.25rem;color:var(--danger)">
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="flex-between page-header" style="flex-wrap:wrap;gap:1rem">
+      <div>
+        <h1 class="page-title">Personalized Diet Plan</h1>
+        <p class="page-subtitle">PCOS-friendly nutrition guidelines tailored to your latest health assessment.</p>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button id="regenerate-btn" class="btn btn-primary btn-sm">Regenerate Plan</button>
+      </div>
+    </div>
+
+    <!-- Alert -->
+    <div id="diet-alert" class="alert diet-alert" role="alert"></div>
+
+    <!-- Content Target -->
+    <div id="diet-content">
+      <div style="text-align:center; padding: 4rem; color:var(--text-muted)">
+        Gathering your nutritional profile...
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="card" style="margin-top:2rem;border-color:var(--border);background:var(--bg-card)">
+      <p style="font-size:.85rem;color:var(--text-muted);line-height:1.5">
+        <strong>Data Note:</strong> These dietary suggestions are generated based on nutritional guidelines and AI models. 
+        This is not professional medical advice. Always consult with a registered dietitian or doctor before making drastic dietary changes.
+      </p>
+    </div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/diet.js"></script>
+</body>
+</html>

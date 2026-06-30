@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account — PCOSense</title>
+  <meta name="description" content="Provision a new PCOSense account to utilize the analysis system." />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .pw-strength-bar-wrap {
+      height: 4px;
+      background: var(--bg-hover);
+      margin-top: .4rem;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    #pw-strength-bar {
+      height: 100%;
+      width: 0;
+      background: var(--text);
+    }
+
+    .privacy-note {
+      font-size: .75rem;
+      color: var(--text-dim);
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      padding: .5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="auth-page">
+    <div class="auth-card" style="max-width:500px">
+
+      <a href="/" class="auth-brand">PCOSense</a>
+
+      <h1 class="auth-title">Create an Account</h1>
+      <p class="auth-subtitle">Join us to start your health assessment journey</p>
+
+      <div id="register-alert" class="alert alert-error" role="alert"></div>
+
+      <form id="register-form" novalidate>
+
+        <!-- Name -->
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name *</label>
+          <div class="input-wrap">
+            <input id="name" type="text" class="form-control" placeholder="Jane Doe" autocomplete="name" required
+              style="padding-left: .75rem;" />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address *</label>
+          <div class="input-wrap">
+            <input id="email" type="email" class="form-control" placeholder="jane@example.com" autocomplete="email"
+              required style="padding-left: .75rem;" />
+          </div>
+        </div>
+
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password *</label>
+          <div class="input-wrap">
+            <input id="password" type="password" class="form-control"
+              placeholder="Create a strong password (min 6 chars)" autocomplete="new-password" required
+              style="padding-left: .75rem;" />
+            <button type="button" id="pw-toggle" class="toggle-pw" aria-label="Toggle password"
+              style="font-weight:600; font-size:.7rem; text-transform:uppercase;">Show</button>
+          </div>
+          <div class="pw-strength-bar-wrap">
+            <div id="pw-strength-bar"></div>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label class="form-label" for="confirm-password">Confirm Password *</label>
+          <div class="input-wrap">
+            <input id="confirm-password" type="password" class="form-control" placeholder="Re-type your password"
+              autocomplete="new-password" required style="padding-left: .75rem;" />
+          </div>
+        </div>
+
+        <!-- Privacy note -->
+        <div class="privacy-note">
+          <strong>Your Privacy First:</strong> We securely encrypt your information. It is never sold or shared.
+        </div>
+
+        <!-- Terms checkbox -->
+        <div style="display:flex;align-items:flex-start;gap:.5rem;margin-bottom:1.5rem">
+          <input type="checkbox" id="terms" required style="width:14px;height:14px;margin-top:.15rem;flex-shrink:0" />
+          <label for="terms" style="font-size:.8rem;color:var(--text-muted);cursor:pointer;line-height:1.5">
+            I understand this tool offers an estimated health screening, and is not a substitute for professional
+            medical advice.
+          </label>
+        </div>
+
+        <button id="register-btn" type="submit" class="btn btn-primary btn-full btn-lg">
+          Sign Up
+        </button>
+      </form>
+
+      <p class="auth-footer" style="margin-top: 1.5rem;">
+        Already have an account? <a href="/login.html">Sign In Here</a>
+      </p>
+      <p class="auth-footer" style="margin-top:.5rem">
+        <a href="/" style="color:var(--text-dim);font-size:.8rem;text-decoration:none;">← Return to Main</a>
+      </p>
+
+    </div>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth-flow.js"></script>
+</body>
+
+</html>

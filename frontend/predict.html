@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCOSenseion Test — PCOSense</title>
+  <meta name="description" content="AI-powered PCOS risk assessment module." />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .predict-wrap {
+      max-width: 700px;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: .25rem;
+    }
+
+    .step-desc {
+      color: var(--text-muted);
+      font-size: .85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-hint {
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-top: .25rem;
+    }
+
+    .symptom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .symptom-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1rem;
+    }
+
+    .symptom-label {
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: .5rem;
+      color: var(--text);
+    }
+
+    #bmi-display {
+      font-size: .85rem;
+      margin-top: .5rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+    <div class="sidebar-backdrop"></div>
+    <button class="menu-toggle-btn" aria-label="Toggle Menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="/" class="sidebar-logo">PCOSense</a>
+      <nav class="sidebar-nav">
+        <span class="sidebar-section-label">Main</span>
+
+        <a href="/dashboard.html" class="sidebar-link">Dashboard</a>
+        <a href="/predict.html" class="sidebar-link active">Start Assessment</a>
+        <a href="/diet.html" class="sidebar-link">Diet Plan</a>
+        <a href="/history.html" class="sidebar-link">My History</a>
+        <a href="/chat.html" class="sidebar-link">Chatbot</a>
+        <a href="/awareness.html" class="sidebar-link">Awareness</a>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar js-user-avatar">U</div>
+          <div class="user-info">
+            <div class="user-name  js-user-name">User</div>
+            <div class="user-email js-user-email">user@email.com</div>
+          </div>
+        </div>
+        <button class="sidebar-link js-logout"
+          style="width:100%;border:none;cursor:pointer;background:none;margin-top:.25rem;color:var(--danger)">
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="page-header predict-wrap">
+        <h1 class="page-title">New Health Assessment</h1>
+        <p class="page-subtitle">Tell us a bit about yourself to begin.</p>
+      </div>
+
+      <!-- Step progress bar -->
+      <div class="steps-bar predict-wrap">
+        <div class="step-dot active" id="dot-1">Step 01 - Info</div>
+        <div class="step-connector" id="conn-1"></div>
+        <div class="step-dot" id="dot-2">Step 02 - Profile</div>
+        <div class="step-connector" id="conn-2"></div>
+        <div class="step-dot" id="dot-3">Step 03 - Symptoms</div>
+        <div class="step-connector" id="conn-3"></div>
+        <div class="step-dot" id="dot-4">Step 04 - Ultrasound</div>
+      </div>
+
+      <!-- Alert -->
+      <div id="predict-alert" class="alert alert-error predict-wrap"></div>
+
+      <form id="predict-form" novalidate>
+
+        <!-- ═══ STEP 1: Personal Metrics ═══ -->
+        <div class="step-section active predict-wrap card" id="step-1">
+          <h2 class="step-title">01 / Personal Information</h2>
+          <p class="step-desc">Just some basic details about you.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="age">Age (years) *</label>
+              <input id="age" type="number" class="form-control" placeholder="e.g. 25" min="14" max="50" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="pulse_rate">Pulse Rate (bpm) *</label>
+              <input id="pulse_rate" type="number" class="form-control" placeholder="e.g. 78" min="40" max="140"
+                required />
+              <p class="form-hint">Resting heart rate in beats per minute</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="height">Height (cm) *</label>
+              <input id="height" type="number" class="form-control" placeholder="e.g. 162" min="100" max="220"
+                required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="weight">Weight (kg) *</label>
+              <input id="weight" type="number" class="form-control" placeholder="e.g. 60" min="25" max="200" required />
+            </div>
+          </div>
+
+          <!-- BMI (auto-calculated) -->
+          <div class="form-group">
+            <label class="form-label" for="bmi">BMI Calculation</label>
+            <input id="bmi" type="number" class="form-control" placeholder="Values derived from above" readonly
+              style="opacity:.6; background-color: var(--bg-hover)" />
+            <p id="bmi-display" class="form-hint"></p>
+          </div>
+
+          <!-- Blood Group -->
+          <div class="form-group">
+            <label class="form-label" for="blood_group">Blood Group Type *</label>
+            <select id="blood_group" class="form-control" required>
+              <option value="" disabled selected>Select from list</option>
+              <option value="11">A+</option>
+              <option value="12">A-</option>
+              <option value="13">AB+</option>
+              <option value="14">AB-</option>
+              <option value="15">B+</option>
+              <option value="16">B-</option>
+              <option value="17">O+</option>
+              <option value="18">O-</option>
+            </select>
+          </div>
+
+          <div
+            style="display:flex;justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+            <button type="button" id="btn-next-1" class="btn btn-primary">Next: Your Cycle</button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 2: Cycle & History ═══ -->
+        <div class="step-section predict-wrap card" id="step-2">
+          <h2 class="step-title">02 / Your Cycle & Health History</h2>
+          <p class="step-desc">Help us understand your typical cycle.</p>
+
+          <!-- Cycle type -->
+          <div class="form-group">
+            <label class="form-label">Cycle Regularity *</label>
+            <div class="toggle-group">
+              <input type="radio" name="cycle_type" id="ct-regular" value="2" class="toggle-radio" />
+              <label for="ct-regular" class="toggle-label">Regular</label>
+              <input type="radio" name="cycle_type" id="ct-irregular" value="4" class="toggle-radio" />
+              <label for="ct-irregular" class="toggle-label">Irregular</label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="cycle_length">Average Cycle Length (days) *</label>
+              <input id="cycle_length" type="number" class="form-control" placeholder="e.g. 28" min="15" max="90"
+                required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="marriage_years">Years Married</label>
+              <input id="marriage_years" type="number" class="form-control" placeholder="e.g. 3" min="0" max="30"
+                value="0" />
+              <p class="form-hint">Input 0 if not applicable</p>
+            </div>
+          </div>
+
+          <!-- Pregnant -->
+          <div class="form-group">
+            <label class="form-label">Current Pregnancy Status *</label>
+            <div class="toggle-group">
+              <input type="radio" name="pregnant" id="pg-no" value="0" class="toggle-radio" />
+              <label for="pg-no" class="toggle-label">Negative</label>
+              <input type="radio" name="pregnant" id="pg-yes" value="1" class="toggle-radio" />
+              <label for="pg-yes" class="toggle-label">Positive</label>
+            </div>
+          </div>
+
+          <!-- Clinical / Ultrasound Data -->
+          <h3 class="step-title" style="margin-top: 1.5rem; font-size: 1rem;">Additional Clinical Details</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="vitamin_d3">Vitamin D3 (ng/mL)</label>
+              <input id="vitamin_d3" type="number" step="0.1" class="form-control" placeholder="e.g. 20" min="0"
+                max="150" />
+              <p class="form-hint">(If unknown, median value will be used)</p>
+            </div>
+          </div>
+
+          <!-- End cycle section -->
+
+          <div
+            style="display:flex;justify-content:space-between;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+            <button type="button" id="btn-back-2" class="btn btn-outline">Back</button>
+            <button type="button" id="btn-next-2" class="btn btn-primary">Next: Symptoms</button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 3: Symptoms ═══ -->
+        <div class="step-section predict-wrap card" id="step-3">
+          <h2 class="step-title">03 / Your Symptoms</h2>
+          <p class="step-desc">Check 'Present' for any symptoms you've experienced recently.</p>
+
+          <div class="symptom-grid">
+
+            <div class="symptom-item">
+              <div class="symptom-label">Skin Darkening *</div>
+              <div class="toggle-group">
+                <input type="radio" name="skin_darkening" id="sd-no" value="0" class="toggle-radio" />
+                <label for="sd-no" class="toggle-label">Absent</label>
+                <input type="radio" name="skin_darkening" id="sd-yes" value="1" class="toggle-radio" />
+                <label for="sd-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item">
+              <div class="symptom-label">Clinical Acne *</div>
+              <div class="toggle-group">
+                <input type="radio" name="pimples" id="pm-no" value="0" class="toggle-radio" />
+                <label for="pm-no" class="toggle-label">Absent</label>
+                <input type="radio" name="pimples" id="pm-yes" value="1" class="toggle-radio" />
+                <label for="pm-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item">
+              <div class="symptom-label">Unexplained Weight Gain *</div>
+              <div class="toggle-group">
+                <input type="radio" name="weight_gain" id="wg-no" value="0" class="toggle-radio" />
+                <label for="wg-no" class="toggle-label">Absent</label>
+                <input type="radio" name="weight_gain" id="wg-yes" value="1" class="toggle-radio" />
+                <label for="wg-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item">
+              <div class="symptom-label">Unexplained Hair Growth *</div>
+              <div class="toggle-group">
+                <input type="radio" name="hair_growth" id="hg-no" value="0" class="toggle-radio" />
+                <label for="hg-no" class="toggle-label">Absent</label>
+                <input type="radio" name="hair_growth" id="hg-yes" value="1" class="toggle-radio" />
+                <label for="hg-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item">
+              <div class="symptom-label">Hair Loss Pattern *</div>
+              <div class="toggle-group">
+                <input type="radio" name="hair_loss" id="hl-no" value="0" class="toggle-radio" />
+                <label for="hl-no" class="toggle-label">Absent</label>
+                <input type="radio" name="hair_loss" id="hl-yes" value="1" class="toggle-radio" />
+                <label for="hl-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item">
+              <div class="symptom-label">Regular Fast Food Diet *</div>
+              <div class="toggle-group">
+                <input type="radio" name="fast_food" id="ff-no" value="0" class="toggle-radio" />
+                <label for="ff-no" class="toggle-label">Absent</label>
+                <input type="radio" name="fast_food" id="ff-yes" value="1" class="toggle-radio" />
+                <label for="ff-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+            <div class="symptom-item"
+              style="grid-column: 1 / -1; display:flex; align-items:center; justify-content:space-between">
+              <div class="symptom-label" style="margin-bottom:0">Regular Exercise Regimen *</div>
+              <div class="toggle-group" style="width:200px">
+                <input type="radio" name="reg_exercise" id="re-no" value="0" class="toggle-radio" />
+                <label for="re-no" class="toggle-label">Absent</label>
+                <input type="radio" name="reg_exercise" id="re-yes" value="1" class="toggle-radio" />
+                <label for="re-yes" class="toggle-label">Present</label>
+              </div>
+            </div>
+
+          </div>
+
+          <div
+            style="display:flex;justify-content:space-between;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+            <button type="button" id="btn-back-3" class="btn btn-outline">Back</button>
+            <button type="button" id="btn-next-3" class="btn btn-primary">Next: Ultrasound Details</button>
+          </div>
+        </div>
+
+        <!-- ═══ STEP 4: Ultrasound Details ═══ -->
+        <div class="step-section predict-wrap card" id="step-4">
+          <h2 class="step-title">04 / Ultrasound Details</h2>
+          <p class="step-desc">Enter your ultrasound scan results if available.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="follicle_left">Follicle No. (Left)</label>
+              <input id="follicle_left" type="number" class="form-control" placeholder="e.g. 5" min="0" max="50" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="follicle_right">Follicle No. (Right)</label>
+              <input id="follicle_right" type="number" class="form-control" placeholder="e.g. 5" min="0" max="50" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="avg_fsize_left">Avg Follicle Size (Left) (mm)</label>
+              <input id="avg_fsize_left" type="number" step="0.1" class="form-control" placeholder="e.g. 14" min="0"
+                max="50" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="avg_fsize_right">Avg Follicle Size (Right) (mm)</label>
+              <input id="avg_fsize_right" type="number" step="0.1" class="form-control" placeholder="e.g. 14" min="0"
+                max="50" />
+            </div>
+          </div>
+
+          <div
+            style="display:flex;justify-content:space-between;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+            <button type="button" id="btn-back-4" class="btn btn-outline">Back</button>
+            <button id="submit-btn" type="submit" class="btn btn-primary">Get Assessment Results</button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Result section (injected by predict.js) -->
+      <div id="result-section" class="predict-wrap" style="display:none;margin-top:1.5rem"></div>
+
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/predict.js"></script>
+</body>
+
+</html>

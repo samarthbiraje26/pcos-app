@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Awareness — PCOSense</title>
+  <meta name="description" content="Learn about PCOS — symptoms, causes, myths vs facts, lifestyle tips, and when to see a doctor."/>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    /* ── Awareness Hero Card ─────────────────────────────── */
+    .awareness-hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 2rem;
+      border-left: 5px solid var(--primary);
+      background: linear-gradient(135deg, var(--bg-card) 0%, #eef2ff 100%);
+    }
+    .awareness-hero-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+      max-width: 720px;
+    }
+    .awareness-stats-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .awareness-stat-chip {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .awareness-stat-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ── Section Titles ──────────────────────────────────── */
+    .awareness-section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* ── Symptoms Grid ───────────────────────────────────── */
+    .awareness-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .awareness-symptom-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      transition: var(--transition);
+    }
+    .awareness-symptom-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-light);
+    }
+    .symptom-icon {
+      font-size: 1.75rem;
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-hover);
+      border-radius: 10px;
+    }
+    .symptom-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+      color: var(--text);
+    }
+    .symptom-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Causes ──────────────────────────────────────────── */
+    .causes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .cause-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .cause-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .cause-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.15rem;
+      color: var(--text);
+    }
+    .cause-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ── Myths vs Facts ─────────────────────────────────── */
+    .myths-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .myth-fact-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .mf-side {
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .mf-side p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .myth-side {
+      background: #fef2f2;
+    }
+    .fact-side {
+      background: #f0fdf4;
+    }
+    .mf-divider {
+      width: 1px;
+      background: var(--border);
+    }
+    .mf-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      width: fit-content;
+    }
+    .myth-badge {
+      background: var(--negative-bg);
+      color: var(--negative);
+      border: 1px solid var(--negative-border);
+    }
+    .fact-badge {
+      background: var(--positive-bg);
+      color: var(--positive);
+      border: 1px solid var(--positive-border);
+    }
+
+    /* ── Lifestyle Tips ─────────────────────────────────── */
+    .tips-card {
+      border-left: 5px solid #10b981;
+      background: linear-gradient(135deg, var(--bg-card) 0%, #ecfdf5 100%);
+    }
+    .tips-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      animation: tipFadeIn 0.35s ease-out both;
+    }
+    @keyframes tipFadeIn {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .tip-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #10b981;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .tip-text {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.55;
+      margin: 0;
+      padding-top: 3px;
+    }
+
+    /* ── When to See a Doctor ────────────────────────────── */
+    .doctor-card {
+      border-left: 5px solid #f59e0b;
+      background: linear-gradient(135deg, var(--bg-card) 0%, #fffbeb 100%);
+    }
+    .doctor-intro {
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .doctor-signs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .doctor-sign-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .doctor-sign-icon {
+      flex-shrink: 0;
+    }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .myth-fact-row {
+        grid-template-columns: 1fr;
+      }
+      .mf-divider {
+        width: 100%;
+        height: 1px;
+      }
+      .awareness-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div class="sidebar-backdrop"></div>
+  <button class="menu-toggle-btn" aria-label="Toggle Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="/" class="sidebar-logo">PCOSense</a>
+    <nav class="sidebar-nav">
+      <span class="sidebar-section-label">Main</span>
+
+      <a href="/dashboard.html" class="sidebar-link">Dashboard</a>
+      <a href="/predict.html" class="sidebar-link">Start Assessment</a>
+      <a href="/diet.html" class="sidebar-link">Diet Plan</a>
+      <a href="/history.html" class="sidebar-link">My History</a>
+      <a href="/chat.html" class="sidebar-link">Chatbot</a>
+      <a href="/awareness.html" class="sidebar-link active">Awareness</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="avatar js-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name  js-user-name">User</div>
+          <div class="user-email js-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button class="sidebar-link js-logout" style="width:100%;border:none;cursor:pointer;background:none;margin-top:.25rem;color:var(--danger)">
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="page-header" style="flex-direction:column;gap:0.25rem;">
+      <h1 class="page-title">PCOS Awareness</h1>
+      <p class="page-subtitle">Understand PCOS — symptoms, causes, myths, lifestyle tips, and when to seek help.</p>
+    </div>
+
+    <!-- Content Target -->
+    <div id="awareness-content">
+      <div style="text-align:center;padding:4rem;color:var(--text-muted)">
+        Loading awareness content...
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="card" style="margin-top:2rem;border-color:var(--border);background:var(--bg-card)">
+      <p style="font-size:.85rem;color:var(--text-muted);line-height:1.5">
+        <strong>Disclaimer:</strong> The information provided here is for educational purposes only and is not a substitute
+        for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other
+        qualified health provider with any questions regarding a medical condition.
+      </p>
+    </div>
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/awareness.js"></script>
+</body>
+</html>

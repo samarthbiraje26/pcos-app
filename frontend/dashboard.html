@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — PCOSense</title>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    .welcome-banner {
+      border: 1px solid var(--border);
+      padding: 1rem;
+      margin-bottom: 2rem;
+      background: var(--bg-card);
+    }
+    .welcome-title { font-size: 1.25rem; font-weight: 600; margin-bottom: .25rem; }
+    .quick-action {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      text-decoration: none;
+    }
+    .quick-action:hover { background: var(--bg-hover); }
+    .quick-action-text h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
+    .quick-action-text p  { font-size: .85rem; color: var(--text-muted); margin-top: .2rem; }
+    .text-positive { color: var(--positive) !important; font-weight: 600; }
+    .text-negative { color: var(--negative) !important; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+  <div class="sidebar-backdrop"></div>
+  <button class="menu-toggle-btn" aria-label="Toggle Menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="/" class="sidebar-logo">PCOSense</a>
+
+    <nav class="sidebar-nav">
+            <span class="sidebar-section-label">Main</span>
+
+      <a href="/dashboard.html" class="sidebar-link active">Dashboard</a>
+      <a href="/predict.html" class="sidebar-link">Start Assessment</a>
+      <a href="/diet.html" class="sidebar-link">Diet Plan</a>
+      <a href="/history.html" class="sidebar-link">My History</a>
+      <a href="/chat.html" class="sidebar-link">Chatbot</a>
+      <a href="/awareness.html" class="sidebar-link">Awareness</a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="avatar js-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name  js-user-name">User</div>
+          <div class="user-email js-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button class="sidebar-link js-logout" style="width:100%;border:none;cursor:pointer;background:none;margin-top:.25rem;color:var(--danger)">
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="page-header" style="flex-direction: column; gap: 0.25rem;">
+      <h1 class="page-title" id="greeting-text">Welcome Back!</h1>
+      <p class="page-subtitle" style="margin-top:0;">Here's an overview of your health assessments.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total" data-counter>0</div>
+        <div class="stat-label">Total Assessments</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-positive" data-counter>0</div>
+        <div class="stat-label">Positive Results</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-negative" data-counter>0</div>
+        <div class="stat-label">Negative Results</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-last-result" style="font-size:1.1rem">—</div>
+        <div class="stat-label" id="stat-last-date">No logs available</div>
+      </div>
+    </div>
+
+    <!-- Quick action CTA -->
+    <a href="/predict.html" class="quick-action">
+      <div class="quick-action-text">
+        <h3>Start a New Health Assessment</h3>
+        <p>Get a quick understanding of your PCOS risk factors today.</p>
+      </div>
+      <div class="btn btn-outline btn-sm">Start</div>
+    </a>
+
+    <!-- Recent predictions -->
+    <div class="card" style="padding: 0;">
+      <div class="section-head" style="padding: 1rem; border-bottom: none; margin-bottom: 0;">
+        <h2 class="section-title">Recent Logs</h2>
+        <a href="/history.html" class="btn btn-ghost btn-sm">View All History</a>
+      </div>
+      <div class="table-wrap" style="border:none; border-top: 1px solid var(--border);">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Assessment Result</th>
+              <th>Confidence Level</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="recent-list">
+            <tr>
+              <td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted)">
+                Querying database...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Info card -->
+    <div class="card" style="margin-top:1.5rem;border-color:var(--border);background:var(--bg-card)">
+      <h3 style="font-size:.95rem;font-weight:600;margin-bottom:.5rem;">A Quick Note</h3>
+      <p style="font-size:.85rem;color:var(--text-muted);line-height:1.5">
+        This tool provides an estimated risk factor to help you understand your health. 
+        It is always recommended to consult with a qualified medical professional for a proper clinical diagnosis.
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
