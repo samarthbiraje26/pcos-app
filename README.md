@@ -24,7 +24,7 @@ Beyond prediction, PCOSense offers a complete health support ecosystem by provid
 - CSS
 - JavaScript
   
-2]Backend
+2] Backend
 - Python
 - Flask
 - REST APIs
